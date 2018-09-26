@@ -8,7 +8,7 @@ pitaxcalc-demo functions that calculate personal income tax liability.
 import math
 import copy
 import numpy as np
-from taxcalc.decorators import iterate_jit
+from taxcalc.decorators import iterate_hit
 
 
 @iterate_jit(nopython=True)
@@ -93,4 +93,10 @@ def pit_liability(calc):
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
+    thd = calc.policy_param(‘rebate_thd’)
+    ceiling = calc.policy_param(‘rebate_ceiling’)
+    rebate_rate = calc.policy_param(‘rebate_rate’)
+    rebate = np.where(taxinc > thd .0, np.minimum((rebate_rate*taxinc),
+                                                  ceiling))
+    tax = np.maximum(0.0, (tax-rebate))
     calc.array('pitax', tax)
