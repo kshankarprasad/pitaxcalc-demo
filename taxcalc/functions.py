@@ -45,6 +45,7 @@ def short_term_apprate(SCTG_APPRATE):
     #       calculations neeed
     return SCTG_APPRATE
 
+
 @iterate_jit(nopython=True)
 def total_other_income(TOTAL_INCOME_OS):
     """
